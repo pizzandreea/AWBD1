@@ -5,10 +5,12 @@ import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
 import com.project.demo.repositories.SoupRepository;
 import com.project.demo.services.SoupService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class SoupServiceImpl implements SoupService {
     private final SoupRepository soupRepository;
 
