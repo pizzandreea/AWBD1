@@ -16,6 +16,7 @@ public class SoupServiceImpl implements SoupService {
         this.soupRepository = soupRepository;
     }
 
+
     @Override
     public Integer create(SoupCreateDto request) {
         var soups = soupRepository.findAll();
