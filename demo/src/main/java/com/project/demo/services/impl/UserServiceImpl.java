@@ -7,12 +7,15 @@ import com.project.demo.dtos.user.UserResponseDto;
 import com.project.demo.repositories.UserRepository;
 import com.project.demo.models.User;
 import com.project.demo.services.UserService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+@Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final static String USER_NOT_FOUND = "User with  email %s not found";

@@ -6,11 +6,13 @@ import com.project.demo.dtos.OrderItemDto;
 import com.project.demo.exceptions.EntityNotFoundException;
 import com.project.demo.models.*;
 import com.project.demo.repositories.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
+@Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -45,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
                 newOrder.setStatus(OrderStatus.STARTED);
 
                 ShippingAddress newShippingAddress = new ShippingAddress();
+                newShippingAddress.setUser(user);
                 ShippingAddress savedShippingAddress = shippingAddressRepository.save(newShippingAddress);
 
                 OrderHeader newOrderHeader = new OrderHeader();
