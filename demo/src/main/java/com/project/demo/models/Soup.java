@@ -29,7 +29,7 @@ public class Soup {
     @OneToMany(mappedBy = "soup")
     private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "soup", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "soup", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     @JsonManagedReference
     private List<Review> reviews;
 

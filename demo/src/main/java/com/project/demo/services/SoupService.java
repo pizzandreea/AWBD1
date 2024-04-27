@@ -13,11 +13,12 @@ public interface SoupService {
 
     public Integer create(SoupCreateDto request);
     public List<Soup> getAll();
+    public Soup getSoupById(Integer id);
     public List<Soup> getSoupsByType(SoupType type);
 
     public List<Soup> filterSoupsByIngredients(List<String> ingredients);
     public Soup restockSoupById(Integer soupId, int stock);
 
 
-
+    void updateSoup(Soup soup);
 }

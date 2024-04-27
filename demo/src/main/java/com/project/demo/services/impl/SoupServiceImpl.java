@@ -37,6 +37,12 @@ public class SoupServiceImpl implements SoupService {
     }
 
     @Override
+    public Soup getSoupById(Integer id) {
+        Soup soup = soupRepository.findById(id).get();
+        return soup;
+    }
+
+    @Override
     public List<Soup> getSoupsByType(SoupType type) {
         return soupRepository.findByType(type);
     }
@@ -60,4 +66,21 @@ public class SoupServiceImpl implements SoupService {
             throw new IllegalArgumentException("Soup with ID " + soupId + " not found");
         }
     }
+
+    @Override
+    public void updateSoup(Soup soup) {
+        // Retrieve the existing soup entity from the database
+        Optional<Soup> existingSoupOptional = soupRepository.findById(soup.getId());
+        existingSoupOptional.ifPresent(existingSoup -> {
+            existingSoup.setName(soup.getName());
+            existingSoup.setPrice(soup.getPrice());
+            existingSoup.setStock(soup.getStock());
+            existingSoup.setType(soup.getType());
+            existingSoup.setIngredients(soup.getIngredients()); // Make sure to handle ingredient updates if necessary
+
+            soupRepository.save(existingSoup);
+        });
+    }
+
+
 }

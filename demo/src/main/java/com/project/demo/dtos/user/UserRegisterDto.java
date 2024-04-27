@@ -3,7 +3,9 @@ package com.project.demo.dtos.user;
 
 import com.project.demo.models.User;
 
+
 public class UserRegisterDto {
+
     private String firstName;
     private String lastName;
     private String email;

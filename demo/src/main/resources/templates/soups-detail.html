@@ -1,0 +1,40 @@
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>Soup edit</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" class="py-5">
+        <div class="container">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <h1 class="fw-bolder" th:text="${soup.name}"></h1>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <p>Type of soup: <span th:text="${soup.type}"></span></p>
+                        <p>Soups on stock: <span th:text="${soup.stock}"></span></p>
+                        <p>Price: <span th:text="${soup.price}"></span> <span>Lei</span></p>
+                        <p>Ingredients:</p>
+                        <ul>
+                            <li th:each="ingredient : ${soup.ingredients}" th:text="${ingredient}"></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary">Delete</button>
+                <button type="submit" class="btn btn-primary">Add to cart</button>
+            <!-- Displaying reviews -->
+            <p>Reviews:</p>
+            <ul>
+                <li th:each="review : ${soup.reviews}">
+                    <p>User: <span th:text="${review.user.firstName}"></span> <span th:text="${review.user.lastName}"></span></p>
+                    <p><span th:text="${review.comment}"></span></p>
+                    <p>Rating: <span th:text="${review.rating}"></span></p>
+                    <!-- You can display additional review details here -->
+                </li>
+            </ul>
+
+        </div>
+    </section>
+</main>
+</body>
+</html>

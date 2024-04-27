@@ -1,5 +1,6 @@
 package com.project.demo.controllers;
 
+import com.project.demo.dtos.user.UserRegisterDto;
 import com.project.demo.dtos.user.UserResponseDto;
 import com.project.demo.models.User;
 import com.project.demo.services.UserService;
@@ -29,14 +30,14 @@ public class UserController {
 
     @GetMapping("/users/create")
     public String createUserForm(Model model) {
-        User user = new User();
+        UserRegisterDto user = new UserRegisterDto();
         model.addAttribute("user", user);
         return "users-create";
     }
 
     @PostMapping("/users/create")
-    public String saveUser(@ModelAttribute("user") User user){
-        userService.saveUser(user);
+    public String saveUser(@ModelAttribute("user") UserRegisterDto user){
+        userService.create(user);
         return "redirect:/users";
     }
 
