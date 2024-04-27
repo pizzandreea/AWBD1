@@ -1,6 +1,7 @@
 package com.project.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.demo.dtos.SoupLightDto;
 import jakarta.persistence.*;
 //import jakarta.validation.constraints.Min;
 //import jakarta.validation.constraints.NotBlank;
@@ -87,5 +88,14 @@ public class Soup {
 
     public void setType(SoupType type) {
         this.type = type;
+    }
+
+    public SoupLightDto toLightSoup(){
+        SoupLightDto lightSoup = new SoupLightDto();
+        lightSoup.setName(this.getName());
+        lightSoup.setPrice(this.getPrice());
+        lightSoup.setStock(this.getStock());
+        lightSoup.setType(this.getType());
+        return lightSoup;
     }
 }

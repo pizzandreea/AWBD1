@@ -1,6 +1,7 @@
 package com.project.demo.services;
 
 import com.project.demo.dtos.SoupCreateDto;
+import com.project.demo.dtos.SoupLightDto;
 import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,16 @@ public interface SoupService {
 
 
     public Integer create(SoupCreateDto request);
-    public List<Soup> getAll();
+    public List<SoupLightDto> getAll();
     public Soup getSoupById(Integer id);
     public List<Soup> getSoupsByType(SoupType type);
+    public List<SoupLightDto> getSoupsSortedByPriceAsc();
+    public List<SoupLightDto> getSoupsSortedByPriceDesc();
+    public List<SoupLightDto> getSoupsSortedByReviewCount();
 
     public List<Soup> filterSoupsByIngredients(List<String> ingredients);
+    public List<SoupLightDto> findSoupsByName(String query);
     public Soup restockSoupById(Integer soupId, int stock);
-
-
     void updateSoup(Soup soup);
+    void delete(Integer id);
 }

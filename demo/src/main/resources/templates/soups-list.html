@@ -8,6 +8,19 @@
 <section layout:fragment="body" class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
         <h2 class="fw-bolder mb-4">Soups</h2>
+        <div class="d-flex mb-3"> <!-- Added d-flex class for flexbox layout -->
+            <form th:action="@{/soups/search}" class="form-inline my-2 my-lg-0 mr-2" style="width: 80%;">
+                <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search a soup" aria-label="Search" > <!-- Adjusted width of the search input -->
+            </form>
+            <form th:action="@{/soups/sort}" method="get" class="form-inline my-2 my-lg-0">
+                <select name="sortBy" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">Sort by...</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="review_count">Number of Reviews</option>
+                </select>
+            </form>
+        </div>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <div th:each="soup :${soups}" class="col mb-5">
                 <div class="card h-100">
@@ -18,7 +31,7 @@
                         <div class="text-center">
                             <!-- Product name-->
                             <h5 th:text="${soup.name}" class="fw-bolder"></h5>
-                            <p th:text="${soup.price}"></p>
+                            <p ><span th:text="${soup.price}"></span><span> Lei</span></p>
                         </div>
                     </div>
                     <!-- Product actions-->

@@ -1,6 +1,7 @@
 package com.project.demo.services.impl;
 
 import com.project.demo.dtos.SoupCreateDto;
+import com.project.demo.dtos.SoupLightDto;
 import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
 import com.project.demo.repositories.SoupRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SoupServiceImpl implements SoupService {
@@ -31,9 +33,9 @@ public class SoupServiceImpl implements SoupService {
     }
 
     @Override
-    public List<Soup> getAll() {
+    public List<SoupLightDto> getAll() {
         var soups = soupRepository.findAll();
-        return soups;
+        return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
     }
 
     @Override
@@ -51,6 +53,30 @@ public class SoupServiceImpl implements SoupService {
     public List<Soup> filterSoupsByIngredients(List<String> ingredients) {
         return soupRepository.findByIngredients(ingredients);
     }
+
+    @Override
+    public List<SoupLightDto> findSoupsByName(String query) {
+        List<Soup> soups = soupRepository.findByName(query);
+        return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
+    }
+    @Override
+    public List<SoupLightDto> getSoupsSortedByPriceAsc() {
+        List<Soup> soups = soupRepository.findAllByOrderByPriceAsc();
+        return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SoupLightDto> getSoupsSortedByPriceDesc() {
+        List<Soup> soups =  soupRepository.findAllByOrderByPriceDesc();
+        return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SoupLightDto> getSoupsSortedByReviewCount() {
+        List<Soup> soups =  soupRepository.findAllSortedByReviewCount();
+        return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
+    }
+
 
     @Override
     public Soup restockSoupById(Integer soupId, int stock) {
@@ -80,6 +106,11 @@ public class SoupServiceImpl implements SoupService {
 
             soupRepository.save(existingSoup);
         });
+    }
+
+    @Override
+    public void delete(Integer id) {
+        soupRepository.deleteById((id));
     }
 
 

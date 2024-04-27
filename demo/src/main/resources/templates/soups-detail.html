@@ -20,7 +20,7 @@
                     </div>
 
                 </div>
-                <button type="submit" class="btn btn-primary">Delete</button>
+                <a class="btn btn-primary" th:href="@{/soups/{id}/delete(id=${soup.id})}">Delete</a>
                 <button type="submit" class="btn btn-primary">Add to cart</button>
             <!-- Displaying reviews -->
             <p>Reviews:</p>

@@ -1,16 +1,15 @@
 package com.project.demo.controllers;
 
 import com.project.demo.dtos.SoupCreateDto;
+import com.project.demo.dtos.SoupLightDto;
 import com.project.demo.models.Soup;
 
-import com.project.demo.models.User;
 import com.project.demo.services.SoupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -36,8 +35,36 @@ public class SoupController {
     }
     @GetMapping("/soups")
     public String getAll(Model model) {
-        List<Soup> soupsList = soupService.getAll();
+        List<SoupLightDto> soupsList = soupService.getAll();
         model.addAttribute("soups", soupsList);
+        return "soups-list";
+    }
+
+    @GetMapping("/soups/search")
+    public String getSoupsByName(@RequestParam(value = "query") String query, Model model){
+        List<SoupLightDto> lightSoups= soupService.findSoupsByName(query);
+        model.addAttribute("soups", lightSoups);
+        return "soups-list";
+    }
+
+    @GetMapping("/soups/sort")
+    public String getSortedSoups(@RequestParam(value = "sortBy") String sortBy, Model model) {
+        List<SoupLightDto> sortedSoups;
+        switch (sortBy) {
+            case "price_asc":
+                sortedSoups = soupService.getSoupsSortedByPriceAsc();
+                break;
+            case "price_desc":
+                sortedSoups = soupService.getSoupsSortedByPriceDesc();
+                break;
+            case "review_count":
+                sortedSoups = soupService.getSoupsSortedByReviewCount();
+                break;
+            default:
+                sortedSoups = soupService.getAll(); // Default to unsorted list
+                break;
+        }
+        model.addAttribute("soups", sortedSoups);
         return "soups-list";
     }
 
@@ -55,9 +82,14 @@ public class SoupController {
     }
 
     @GetMapping("/soups/{id}")
-    public String SoupDetail(@PathVariable("id") Integer id, Model model){
+    public String soupDetail(@PathVariable("id") Integer id, Model model){
         Soup soup = soupService.getSoupById(id);
         model.addAttribute("soup", soup);
         return "soups-detail";
+    }
+    @GetMapping("/soups/{id}/delete")
+    public String deleteSoup(@PathVariable("id") Integer id){
+        soupService.delete(id);
+        return "redirect:/soups";
     }
 }

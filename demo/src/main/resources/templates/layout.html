@@ -12,22 +12,29 @@
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container px-5">
+    <div class="container-fluid px-5"> <!-- Changed container to container-fluid for full width -->
         <a class="navbar-brand" th:href="@{/}">Soup Store</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="d-flex justify-content-end w-75"> <!-- Added d-flex and justify-content-end to align items to the right -->
+            <form th:action="@{/soups/search}" class="form-inline my-2 my-lg-0 mb-3">
+                <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search a soup" aria-label="Search" style="width: 80%;"> <!-- Adjusted width of the search input -->
+            </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownSoups" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Soups</a>
-                    <ul  class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
                         <li><a class="dropdown-item" th:href="@{/soups}">See all soups</a></li>
                         <li><a class="dropdown-item" th:href="@{/soups/create}">Create soup</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownUsers" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
-                    <ul  class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
                         <li><a class="dropdown-item" th:href="@{/users}">See all users</a></li>
                         <li><a class="dropdown-item" th:href="@{/users/create}">Create user</a></li>
                     </ul>
@@ -37,6 +44,7 @@
         </div>
     </div>
 </nav>
+
 <body layout:fragment="body">
 
 </body>
