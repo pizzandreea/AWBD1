@@ -8,7 +8,9 @@ import com.project.demo.models.ShippingAddress;
 import com.project.demo.models.User;
 import com.project.demo.repositories.ShippingAddressRepository;
 import com.project.demo.repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ShippingAddressServiceImpl implements ShippingAddressService {
 
     private final ShippingAddressRepository shippingAddressRepository;

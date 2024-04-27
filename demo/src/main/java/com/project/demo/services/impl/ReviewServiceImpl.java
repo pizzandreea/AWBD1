@@ -8,9 +8,11 @@ import com.project.demo.repositories.ReviewRepository;
 import com.project.demo.repositories.SoupRepository;
 import com.project.demo.repositories.UserRepository;
 import com.project.demo.services.ReviewService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final SoupRepository soupRepository;

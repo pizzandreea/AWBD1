@@ -1,0 +1,27 @@
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <script>
+        function submitForm() {
+            var userId = document.getElementById("userId").value;
+            var form = document.getElementById("orderForm");
+            form.action = "/getStartedOrder/" + userId;
+            form.submit();
+        }
+    </script>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" class="py-5">
+        <div class="container">
+            <h1>Find order by userId: </h1>
+            <form id="orderForm" method="get" onsubmit="event.preventDefault(); submitForm();">
+                <label for="userId">User ID:</label>
+                <input type="number" id="userId" name="userId" required>
+                <button type="submit">View Order</button>
+            </form>
+
+        </div>
+    </section>
+</main>
+</body>
+</html>

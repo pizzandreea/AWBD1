@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 public class LoginMessage {
     String message;
     Boolean status;
+
     public String getMessage() {
         return message;
     }
