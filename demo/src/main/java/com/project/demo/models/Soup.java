@@ -92,6 +92,7 @@ public class Soup {
 
     public SoupLightDto toLightSoup(){
         SoupLightDto lightSoup = new SoupLightDto();
+        lightSoup.setId(this.getId());
         lightSoup.setName(this.getName());
         lightSoup.setPrice(this.getPrice());
         lightSoup.setStock(this.getStock());

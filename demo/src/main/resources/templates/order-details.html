@@ -4,6 +4,16 @@
     <section layout:fragment="body" class="py-5">
         <div class="container">
         <div th:if="${order != null}">
+            <h2>Add Soups</h2>
+            <form th:action="@{/addSoupToOrder/{userId}(userId=${userId})}" method="post" th:object="${orderItemDto}">
+                <select class="form-control" id="soupId" name="soupId" th:field="*{soupId}">
+                    <option th:each="soup : ${soups}" th:value="${soup.id}" th:text="${soup.name}"></option>
+                </select>
+                <input type="number" name="quantity" placeholder="Quantity" required>
+                <button type="submit">Add Soup</button>
+            </form>
+
+
             <h1>Order Details</h1>
             <p>Order ID: <span th:text="${order.id}"></span></p>
             <p>Status: <span th:text="${order.status}"></span></p>
@@ -23,7 +33,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="item : ${order.orderItems}">
-                    <td th:text="${item.product.name}"></td>
+                    <td th:text="${item.soup.name}"></td>
                     <td th:text="${item.quantity}"></td>
                     <td th:text="${item.price}"></td>
                 </tr>

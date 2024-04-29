@@ -5,6 +5,12 @@ public class OrderItemDto {
     private Integer soupId;
     private int quantity;
 
+    public OrderItemDto(Integer soupId, int quantity){
+        this.soupId = soupId;
+        this.quantity = quantity;
+    }
+
+    public OrderItemDto(){};
 
     public Integer getSoupId() {
         return soupId;

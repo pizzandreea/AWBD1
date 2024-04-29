@@ -13,6 +13,8 @@ public class SoupLightDto {
     private int stock;
     private SoupType type;
 
+    public void setId(Integer id) {this.id = id;}
+
     public Integer getId() {
         return id;
     }

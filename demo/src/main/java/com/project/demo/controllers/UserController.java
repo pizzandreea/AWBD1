@@ -21,15 +21,19 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @GetMapping("/users")
     public String getAll(Model model) {
+        System.out.println("Request received to get all users.");
         List<UserResponseDto> usersList = userService.getAll();
         model.addAttribute("users", usersList);
+        System.out.println("Number of users retrieved: " + usersList.size());
         return "users-list";
     }
 
     @GetMapping("/users/create")
     public String createUserForm(Model model) {
+        System.out.println("Request received to create user form.");
         UserRegisterDto user = new UserRegisterDto();
         model.addAttribute("user", user);
         return "users-create";
@@ -37,7 +41,9 @@ public class UserController {
 
     @PostMapping("/users/create")
     public String saveUser(@ModelAttribute("user") UserRegisterDto user){
+        System.out.println("Request received to save user: " + user.toString());
         userService.create(user);
+        System.out.println("User saved successfully."); 
         return "redirect:/users";
     }
 
