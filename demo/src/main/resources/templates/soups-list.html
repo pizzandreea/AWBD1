@@ -67,7 +67,29 @@
                 </li>
             </ul>
         </nav>
-        </div>
+        <form id="pageForm" th:action="@{/soups/0/__${pageSize}__/__${field}__}" method="get" class="form-inline my-2 my-lg-0">
+            <select id="pageSize" name="pageSize" class="form-select form-select-sm" onchange="updatePageSize()">
+                <option value="">Page Size</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+        </form>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            function updatePageSize() {
+                var pageSize = document.getElementById("pageSize").value;
+                var field = /*[[${field}]]*/ '';
+                document.getElementById("pageForm").action = "/soups/0/" + pageSize + "/" + field;
+                document.getElementById("pageForm").submit();
+            }
+            /*]]>*/
+        </script>
+
+
+
+
+    </div>
     </div>
 </section>
 
