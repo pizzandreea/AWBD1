@@ -4,8 +4,11 @@ package com.project.demo.dtos.user;
 import com.project.demo.models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRegisterDto {
     @NotBlank
     private String firstName;

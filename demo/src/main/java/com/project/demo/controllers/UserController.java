@@ -42,11 +42,13 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String saveUser(@Valid @ModelAttribute("user") UserRegisterDto user,
+    public String saveUser(@Valid @ModelAttribute("user") UserRegisterDto user, Model model,
                            BindingResult result){
 
-        if(result.hasErrors())
-            return "users-create";
+        if(result.hasErrors()) {
+            model.addAttribute("error", "Error creating user");
+            return "error-page";
+        }
         System.out.println("Request received to save user: " + user.toString());
         userService.create(user);
         System.out.println("User saved successfully.");
