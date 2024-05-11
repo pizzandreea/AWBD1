@@ -23,15 +23,48 @@
                     <div class="form-group col-md-6">
                         <label for="type">Soup Type</label>
                         <select class="form-control" id="type" name="type" th:field="*{type}">
+                            <option value="">Select Soup Type</option> <!-- Add empty option -->
                             <option th:each="soupType : ${T(com.project.demo.models.SoupType).values()}"
-                                    th:value="${soupType}" th:text="${soupType}">Soup Type</option>
+                                    th:value="${soupType}" th:text="${soupType}"></option>
                         </select>
+                        <p th:if="${#fields.hasErrors('type')}" class="text-danger" th:errors="*{type}"></p>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="ingredient">Ingredients</label>
+                        <input type="text" class="form-control" id="ingredient" placeholder="Enter ingredient">
+                        <button type="button" class="btn btn-primary mt-2" id="addIngredientBtn">Add Ingredient</button>
+                        <p id="ingredientError" class="text-danger"></p>
+                        <label for="addedIngredients">Added Ingredients:</label>
+                        <ul id="addedIngredients" class="list-group mt-2"></ul>
+                        <!-- Hidden input field to store the ingredients -->
+                        <input type="hidden" id="ingredientsField" name="ingredients" th:field="*{ingredients}">
                     </div>
 
                 </div>
-
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
+            <script th:inline="javascript">
+                $(document).ready(function() {
+                    $('#addIngredientBtn').click(function() {
+                        var ingredient = $('#ingredient').val().trim();
+                        if (ingredient === '') {
+                            $('#ingredientError').text('Please enter an ingredient.');
+                        } else {
+                            $('#ingredientError').text('');
+                            $('#addedIngredients').append('<li class="list-group-item">' + ingredient + '</li>');
+                            $('#ingredient').val(''); // Clear the input field after adding
+
+                            // Update the value of the hidden input field with the updated list of ingredients
+                            var ingredients = $('#addedIngredients li').map(function() {
+                                return $(this).text();
+                            }).get().join(',');
+                            $('#ingredientsField').val(ingredients);
+                        }
+                    });
+                });
+            </script>
+
+
         </div>
     </section>
 </main>

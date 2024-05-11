@@ -3,14 +3,19 @@ package com.project.demo.dtos;
 
 import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
 public class SoupCreateDto {
+    @NotBlank
     private String name;
+    @Positive
     private double price;
+    @PositiveOrZero
     private int stock;
     private List<String> ingredients;
+    @NotNull
     private SoupType type;
 
     public String getName() {

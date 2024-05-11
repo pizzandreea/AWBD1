@@ -5,9 +5,11 @@ import com.project.demo.dtos.SoupLightDto;
 import com.project.demo.models.Soup;
 
 import com.project.demo.services.SoupService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +31,11 @@ public class SoupController {
         return "soups-create";
     }
     @PostMapping("/soups/create")
-    public String save(@ModelAttribute("soup")SoupCreateDto soup) {
+    public String save(@Valid @ModelAttribute("soup")SoupCreateDto soup,
+                       BindingResult result) {
+        if(result.hasErrors())
+            return "soups-create";
+
         soupService.create(soup);
         return "redirect:/soups";
     }

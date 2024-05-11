@@ -2,13 +2,19 @@ package com.project.demo.dtos.user;
 
 
 import com.project.demo.models.User;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 
 public class UserRegisterDto {
-
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
     private String password;
 
     public User toUser(User user){

@@ -18,7 +18,7 @@ public class Soup {
 //    @NotBlank
     private String name;
     private double price;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "soup_ingredients", joinColumns = @JoinColumn(name = "soup_id"))
     @Column(name = "ingredient")
     private List<String> ingredients;

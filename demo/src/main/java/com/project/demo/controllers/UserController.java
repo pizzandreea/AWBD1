@@ -4,9 +4,11 @@ import com.project.demo.dtos.user.UserRegisterDto;
 import com.project.demo.dtos.user.UserResponseDto;
 import com.project.demo.models.User;
 import com.project.demo.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +42,11 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String saveUser(@ModelAttribute("user") UserRegisterDto user){
+    public String saveUser(@Valid @ModelAttribute("user") UserRegisterDto user,
+                           BindingResult result){
+
+        if(result.hasErrors())
+            return "users-create";
         System.out.println("Request received to save user: " + user.toString());
         userService.create(user);
         System.out.println("User saved successfully."); 
