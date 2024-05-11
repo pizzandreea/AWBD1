@@ -1,5 +1,7 @@
 package com.project.demo.services.impl;
 
+import com.project.demo.exceptions.AddItemToOrderException;
+import com.project.demo.exceptions.RemoveItemFromOrderException;
 import com.project.demo.services.OrderService;
 
 import com.project.demo.dtos.OrderItemDto;
@@ -66,39 +68,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order addItemToOpenOrder(Integer userId, OrderItemDto orderItemDto) {
-        Order openOrder = getStartedOrder(userId);
+    public Order addItemToOpenOrder(Integer userId, OrderItemDto orderItemDto){
+        try {
+            Order openOrder = getStartedOrder(userId);
 
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(openOrder);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(openOrder);
 
-        Soup soup = soupRepository.findById(orderItemDto.getSoupId())
-                .orElseThrow(() -> new IllegalArgumentException("Soup not found"));
+            Soup soup = soupRepository.findById(orderItemDto.getSoupId())
+                    .orElseThrow(() -> new IllegalArgumentException("Soup not found"));
 
-        orderItem.setSoup(soup);
-        orderItem.setQuantity(orderItemDto.getQuantity());
-        orderItem.setPrice(soup.getPrice());
+            orderItem.setSoup(soup);
+            orderItem.setQuantity(orderItemDto.getQuantity());
+            orderItem.setPrice(soup.getPrice());
 
-        var savedOrderItem = orderItemRepository.save(orderItem);
-        openOrder.addItem(savedOrderItem);
-        updateTotalCost(openOrder, openOrder.getOrderHeader());
+            var savedOrderItem = orderItemRepository.save(orderItem);
+            openOrder.addItem(savedOrderItem);
+            updateTotalCost(openOrder, openOrder.getOrderHeader());
 
-        return orderRepository.save(openOrder);
+            return orderRepository.save(openOrder);
+        } catch (Exception e) {
+            throw new AddItemToOrderException(e.getMessage());
+        }
     }
 
     @Override
     public Order removeItemFromOpenOrder(Integer userId, Integer orderItemId) {
-        Order openOrder = getStartedOrder(userId);
+        try {
+            Order openOrder = getStartedOrder(userId);
 
-        OrderItem orderItemToRemove = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
+            OrderItem orderItemToRemove = orderItemRepository.findById(orderItemId)
+                    .orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
 
-        openOrder.getOrderItems().remove(orderItemToRemove);
+            openOrder.getOrderItems().remove(orderItemToRemove);
 
-        updateTotalCost(openOrder, openOrder.getOrderHeader());
+            updateTotalCost(openOrder, openOrder.getOrderHeader());
 
-        return orderRepository.save(openOrder);
+            return orderRepository.save(openOrder);
+        } catch (Exception e) {
+            throw new RemoveItemFromOrderException(e.getMessage());
+        }
     }
+
 
     @Override
     public void updateTotalCost(Order order, OrderHeader orderHeader) {

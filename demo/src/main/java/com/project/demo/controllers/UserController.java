@@ -49,7 +49,7 @@ public class UserController {
             return "users-create";
         System.out.println("Request received to save user: " + user.toString());
         userService.create(user);
-        System.out.println("User saved successfully."); 
+        System.out.println("User saved successfully.");
         return "redirect:/users";
     }
 

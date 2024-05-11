@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final static String USER_NOT_FOUND = "User with  email %s not found";
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

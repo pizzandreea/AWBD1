@@ -1,0 +1,15 @@
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+</head>
+<body>
+
+<section layout:fragment="body" class="py-5 bg-light">
+   <h2>An error has occured :( : </h2>
+    <p th:text="${error}"></p>
+</section>
+
+</body>
+</html>

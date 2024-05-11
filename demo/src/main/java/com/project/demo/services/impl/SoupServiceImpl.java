@@ -2,6 +2,7 @@ package com.project.demo.services.impl;
 
 import com.project.demo.dtos.SoupCreateDto;
 import com.project.demo.dtos.SoupLightDto;
+import com.project.demo.exceptions.SoupRetrievalException;
 import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
 import com.project.demo.repositories.SoupRepository;
@@ -33,8 +34,13 @@ public class SoupServiceImpl implements SoupService {
     }
 
     @Override
-    public List<SoupLightDto> getAll() {
-        var soups = soupRepository.findAll();
+    public List<SoupLightDto> getAll(){
+        List<Soup> soups;
+        try {
+            soups = soupRepository.findAll();
+        } catch (Exception e) {
+            throw new SoupRetrievalException(e.getMessage());
+        }
         return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
     }
 

@@ -36,21 +36,51 @@ public class OrderController {
     @GetMapping("/getStartedOrder/{userId}")
     public String getStartedOrder(@PathVariable Integer userId, Model model) {
         System.out.println("Getting started order for user with ID: " + userId);
-        Order startedOrder = orderService.getStartedOrder(userId);
-        List<SoupLightDto> soupsList = soupService.getAll();
-        OrderItemDto orderItemDto = new OrderItemDto();
+        try {
+            Order startedOrder = orderService.getStartedOrder(userId);
+            List<SoupLightDto> soupsList = soupService.getAll();
+            OrderItemDto orderItemDto = new OrderItemDto();
 
-        model.addAttribute("soups", soupsList);
-        model.addAttribute("order", startedOrder);
-        model.addAttribute("orderItemDto", orderItemDto);
+            model.addAttribute("soups", soupsList);
+            model.addAttribute("order", startedOrder);
+            model.addAttribute("orderItemDto", orderItemDto);
+        }catch(Exception e){
+            model.addAttribute("error", e);
+            return "error-page";
+        }
         return "order-details";
     }
 
     @PostMapping("/addSoupToOrder/{userId}")
-    public String addSoupToOrder(@PathVariable Integer userId, @ModelAttribute("orderItemDto") OrderItemDto orderItemDto) {
+    public String addSoupToOrder(@PathVariable Integer userId, @ModelAttribute("orderItemDto") OrderItemDto orderItemDto, Model model) {
+        try{
         System.out.println("Adding soup to order for user with ID: " + userId + ", Soup ID: " + orderItemDto.getSoupId() );
         System.out.println("Quantity: " + orderItemDto.getQuantity() );
-        orderService.addItemToOpenOrder(userId, orderItemDto);
+        orderService.addItemToOpenOrder(userId, orderItemDto);}
+        catch(Exception e){
+            model.addAttribute("error", e);
+            return "error-page";
+        }
         return "redirect:/getStartedOrder/" + userId;
     }
+
+    @PostMapping("/deleteItem")
+    public String deleteItem(@RequestParam Integer userId, @RequestParam Integer orderItemId, Model model) {
+        try {
+            orderService.removeItemFromOpenOrder(userId, orderItemId);
+            Order startedOrder = orderService.getStartedOrder(userId);
+            List<SoupLightDto> soupsList = soupService.getAll();
+            OrderItemDto orderItemDto = new OrderItemDto();
+
+            model.addAttribute("soups", soupsList);
+            model.addAttribute("order", startedOrder);
+            model.addAttribute("orderItemDto", orderItemDto);
+        }catch(Exception e){
+            model.addAttribute("error", e);
+            return "error-page";
+        }
+
+        return "order-details";
+    }
+
 }
