@@ -7,6 +7,10 @@ import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
 import com.project.demo.repositories.SoupRepository;
 import com.project.demo.services.SoupService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +46,14 @@ public class SoupServiceImpl implements SoupService {
             throw new SoupRetrievalException(e.getMessage());
         }
         return soups.stream().map(soup -> soup.toLightSoup()).collect(Collectors.toList());
+    }
+    public Page<SoupLightDto> getAllSoups(Integer pageSize,Integer offset, String field) {
+        Page<Soup> soups = soupRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by(field)));
+        List<SoupLightDto> lightSoups = soups.getContent().stream()
+                .map(Soup::toLightSoup)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(lightSoups, soups.getPageable(), soups.getTotalElements());
     }
 
     @Override

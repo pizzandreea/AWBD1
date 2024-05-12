@@ -7,6 +7,7 @@ import com.project.demo.models.Soup;
 import com.project.demo.services.SoupService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,12 +38,19 @@ public class SoupController {
             return "soups-create";
 
         soupService.create(soup);
-        return "redirect:/soups";
+        return "redirect:/soupsList/0?pageSize=5&field=name";
     }
-    @GetMapping("/soups")
-    public String getAll(Model model) {
-        List<SoupLightDto> soupsList = soupService.getAll();
-        model.addAttribute("soups", soupsList);
+    @GetMapping("/soupsList/{offset}")
+    public String getAllSoups(@RequestParam("pageSize") Integer pageSize,
+                              @PathVariable("offset") Integer offset,
+                              @RequestParam("field") String field,
+                              Model model) {
+        Page<SoupLightDto> soupsPage = soupService.getAllSoups(pageSize, offset, field);
+        model.addAttribute("soups", soupsPage.getContent());
+        model.addAttribute("totalPages", soupsPage.getTotalPages());
+        model.addAttribute("offset", offset);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("field", field);
         return "soups-list";
     }
 
@@ -84,7 +92,7 @@ public class SoupController {
     public String update(@PathVariable("id")Integer id, @ModelAttribute("soup")Soup soup) {
         soup.setId(id);
         soupService.updateSoup(soup);
-        return "redirect:/soups";
+        return "redirect:/soupsList/0?pageSize=5&field=name";
     }
 
     @GetMapping("/soups/{id}")
@@ -96,6 +104,6 @@ public class SoupController {
     @GetMapping("/soups/{id}/delete")
     public String deleteSoup(@PathVariable("id") Integer id){
         soupService.delete(id);
-        return "redirect:/soups";
+        return "redirect:/soupsList/0?pageSize=5&field=name";
     }
 }

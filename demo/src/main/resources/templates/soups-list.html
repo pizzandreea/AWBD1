@@ -10,16 +10,28 @@
         <h2 class="fw-bolder mb-4">Soups</h2>
         <div class="d-flex mb-3"> <!-- Added d-flex class for flexbox layout -->
             <form th:action="@{/soups/search}" class="form-inline my-2 my-lg-0 mr-2" style="width: 80%;">
-                <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search a soup" aria-label="Search" > <!-- Adjusted width of the search input -->
+                <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search a soup" aria-label="Search" >
             </form>
-            <form th:action="@{/soups/sort}" method="get" class="form-inline my-2 my-lg-0">
-                <select name="sortBy" class="form-select form-select-sm" onchange="this.form.submit()">
-                    <option value="">Sort by...</option>
-                    <option value="price_asc">Price: Low to High</option>
-                    <option value="price_desc">Price: High to Low</option>
-                    <option value="review_count">Number of Reviews</option>
+            <form id="sortForm" th:action="@{/soupsList/0}" method="get" class="form-inline my-2 my-lg-0" onchange="updateSortAction()">
+                <select id="sortBy" name="field" class="form-select form-select-sm">
+                    <option value="">Select an option</option>
+                    <option value="name">Alphabetical</option>
+                    <option value="price">Price: Low to High</option>
                 </select>
+                <input type="hidden" name="pageSize" th:value="${pageSize}" value="5"/>
             </form>
+
+            <script th:inline="javascript">
+                function updateSortAction() {
+                    var sortBy = document.getElementById("sortBy").value;
+                    var pageSize = document.querySelector('input[name="pageSize"]').value;
+                    document.getElementById("sortForm").action = "/soupsList/0?pageSize=" + pageSize + "&field=" + sortBy;
+                    document.getElementById("sortForm").submit();
+                }
+            </script>
+
+
+
         </div>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <div th:each="soup :${soups}" class="col mb-5">
@@ -32,7 +44,6 @@
                             <p ><span th:text="${soup.price}"></span><span> Lei</span></p>
                         </div>
                     </div>
-                    <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                         <div class="text-center">
                             <a class="btn btn-outline-dark mt-auto" th:href="@{/soups/{id}/edit(id=${soup.id})}">Edit</a>
@@ -41,91 +52,42 @@
                     </div>
                 </div>
             </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-                    </div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Special Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$20.00</span>
-                            $18.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-                    </div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Sale Item</h5>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$50.00</span>
-                            $25.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Popular Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            $40.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
+
         </div>
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:class="${offset == 0} ? 'disabled' : ''">
+                <a class="page-link" th:if="${offset > 0}" th:href="@{'/soupsList/' + (${offset}-1) + '?pageSize=' + ${pageSize} + '&field=' + ${field}}">Previous</a>
+            </li>
+
+            <li class="page-item" th:each="pageNo : ${#numbers.sequence(0, totalPages - 1)}">
+                <a class="page-link" th:href="@{'/soupsList/' + ${pageNo} + '?pageSize=' + ${pageSize} + '&field=' + ${field}}" th:text="${pageNo + 1}"></a>
+            </li>
+
+            <li class="page-item" th:class="${offset == totalPages - 1} ? 'disabled' : ''">
+                <a class="page-link" th:if="${offset < totalPages - 1}" th:href="@{'/soupsList/' + (${offset}+1) + '?pageSize=' + ${pageSize} + '&field=' + ${field}}">Next</a>
+            </li>
+        </ul>
+        <form id="pageForm" th:action="@{/soupsList/0}" method="get" class="form-inline my-2 my-lg-0">
+            <select id="pageSize" name="pageSize" class="form-select form-select-sm" onchange="updatePageSize()">
+                <option value="" th:selected="${pageSize eq null}">Page Size</option>
+                <option value="5" th:selected="${pageSize == 5}">5</option>
+                <option value="10" th:selected="${pageSize == 10}">10</option>
+                <option value="20" th:selected="${pageSize == 20}">20</option>
+            </select>
+            <input type="hidden" name="field" th:value="${field}"/>
+        </form>
+        <script th:inline="javascript">
+            function updatePageSize() {
+                var pageSize = document.getElementById("pageSize").value;
+                var field = document.querySelector('input[name="field"]').value;
+                document.getElementById("pageForm").action = "/soupsList/0?pageSize=" + pageSize + "&field=" + field;
+                document.getElementById("pageForm").submit();
+            }
+        </script>
+
+    </div>
     </div>
 </section>
-<!-- Footer-->
 
 </body>
 </html>
