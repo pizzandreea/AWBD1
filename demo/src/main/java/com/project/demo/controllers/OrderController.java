@@ -6,7 +6,10 @@ import com.project.demo.models.Order;
 
 import com.project.demo.services.OrderService;
 import com.project.demo.services.SoupService;
+import groovy.util.logging.Slf4j;
 import org.aspectj.weaver.ast.Or;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +20,10 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
+@Slf4j
 public class OrderController {
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
+
     private final OrderService orderService;
     private final SoupService soupService;
 
@@ -29,13 +35,13 @@ public class OrderController {
 
     @GetMapping("/orders")
     public String getOrderPage() {
-        System.out.println("Accessing orders page");
+        log.info("Accessing orders page");
         return "orders-page";
     }
 
     @GetMapping("/getStartedOrder/{userId}")
     public String getStartedOrder(@PathVariable Integer userId, Model model) {
-        System.out.println("Getting started order for user with ID: " + userId);
+        log.info("Getting started order for user with ID: " + userId);
         try {
             Order startedOrder = orderService.getStartedOrder(userId);
             List<SoupLightDto> soupsList = soupService.getAll();
@@ -54,8 +60,8 @@ public class OrderController {
     @PostMapping("/addSoupToOrder/{userId}")
     public String addSoupToOrder(@PathVariable Integer userId, @ModelAttribute("orderItemDto") OrderItemDto orderItemDto, Model model) {
         try{
-        System.out.println("Adding soup to order for user with ID: " + userId + ", Soup ID: " + orderItemDto.getSoupId() );
-        System.out.println("Quantity: " + orderItemDto.getQuantity() );
+        log.info("Adding soup to order for user with ID: " + userId + ", Soup ID: " + orderItemDto.getSoupId() );
+        log.info("Quantity: " + orderItemDto.getQuantity() );
         orderService.addItemToOpenOrder(userId, orderItemDto);}
         catch(Exception e){
             model.addAttribute("error", e);

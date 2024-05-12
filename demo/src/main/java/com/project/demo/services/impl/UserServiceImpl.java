@@ -1,5 +1,6 @@
 package com.project.demo.services.impl;
 
+import com.project.demo.controllers.OrderController;
 import com.project.demo.dtos.user.LoginMessage;
 import com.project.demo.dtos.user.UserLoginDto;
 import com.project.demo.dtos.user.UserRegisterDto;
@@ -7,6 +8,9 @@ import com.project.demo.dtos.user.UserResponseDto;
 import com.project.demo.repositories.UserRepository;
 import com.project.demo.models.User;
 import com.project.demo.services.UserService;
+import groovy.util.logging.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +20,10 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
+
     private final UserRepository userRepository;
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -35,8 +42,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto create(UserRegisterDto request) {
         var users = userRepository.findAll();
-        System.out.println("Existing users: " + users.toString());
-        System.out.println("Email to create: " + request.getEmail());
+        log.info("Existing users: " + users.toString());
+        log.info("Email to create: " + request.getEmail());
 
         if (users.stream().noneMatch(x -> Objects.equals(Objects.toString(x.getEmail(), null), request.getEmail()))) {
             User user = request.toUser(new User());

@@ -2,9 +2,11 @@ package com.project.demo.controllers;
 
 import com.project.demo.dtos.user.UserRegisterDto;
 import com.project.demo.dtos.user.UserResponseDto;
-import com.project.demo.models.User;
 import com.project.demo.services.UserService;
+import groovy.util.logging.Slf4j;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,10 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
+@Slf4j
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
     private final UserService userService;
 
     @Autowired
@@ -26,16 +31,16 @@ public class UserController {
 
     @GetMapping("/users")
     public String getAll(Model model) {
-        System.out.println("Request received to get all users.");
+        log.info("Request received to get all users.");
         List<UserResponseDto> usersList = userService.getAll();
         model.addAttribute("users", usersList);
-        System.out.println("Number of users retrieved: " + usersList.size());
+        log.info("Number of users retrieved: " + usersList.size());
         return "users-list";
     }
 
     @GetMapping("/users/create")
     public String createUserForm(Model model) {
-        System.out.println("Request received to create user form.");
+        log.info("Request received to create user form.");
         UserRegisterDto user = new UserRegisterDto();
         model.addAttribute("user", user);
         return "users-create";
@@ -49,9 +54,9 @@ public class UserController {
             model.addAttribute("error", "Error creating user");
             return "error-page";
         }
-        System.out.println("Request received to save user: " + user.toString());
+        log.info("Request received to save user: " + user.toString());
         userService.create(user);
-        System.out.println("User saved successfully.");
+        log.info("User saved successfully.");
         return "redirect:/users";
     }
 
