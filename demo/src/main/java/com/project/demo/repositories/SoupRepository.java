@@ -23,5 +23,5 @@ public interface SoupRepository extends JpaRepository<Soup, Integer> {
     List<Soup> findAllByOrderByPriceDesc();
     @Query("SELECT s, SIZE(s.reviews) AS reviewCount FROM Soup s ORDER BY SIZE(s.reviews)  DESC")
     List<Soup> findAllSortedByReviewCount();
-
+    boolean existsByName(String name);
 }

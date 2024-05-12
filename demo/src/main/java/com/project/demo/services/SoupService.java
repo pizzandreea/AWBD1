@@ -2,6 +2,7 @@ package com.project.demo.services;
 
 import com.project.demo.dtos.SoupCreateDto;
 import com.project.demo.dtos.SoupLightDto;
+import com.project.demo.exceptions.DuplicateRowException;
 import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface SoupService {
 
 
-    public Integer create(SoupCreateDto request);
+    public Integer create(SoupCreateDto request) throws DuplicateRowException;
     public List<SoupLightDto> getAll();
     public Page<SoupLightDto> getAllSoups(Integer pageSize, Integer offset, String field);
     public Soup getSoupById(Integer id);

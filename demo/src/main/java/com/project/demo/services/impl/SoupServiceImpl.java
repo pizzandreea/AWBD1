@@ -2,6 +2,7 @@ package com.project.demo.services.impl;
 
 import com.project.demo.dtos.SoupCreateDto;
 import com.project.demo.dtos.SoupLightDto;
+import com.project.demo.exceptions.DuplicateRowException;
 import com.project.demo.exceptions.EntityNotFoundException;
 import com.project.demo.exceptions.SoupRetrievalException;
 import com.project.demo.models.Soup;
@@ -28,15 +29,16 @@ public class SoupServiceImpl implements SoupService {
 
 
     @Override
-    public Integer create(SoupCreateDto request) {
-        var soups = soupRepository.findAll();
-        if(soups.stream().noneMatch(x -> x.getName().equals(request.getName()))){
-            Soup soup = request.toSoup(new Soup());
-            var createdsoup = soupRepository.save(soup);
-            return createdsoup.getId();
+    public Integer create(SoupCreateDto request) throws DuplicateRowException {
+        if (soupRepository.existsByName(request.getName())) {
+            throw new DuplicateRowException("Soup", "name", request.getName());
         }
-        return null;
+
+        Soup soup = request.toSoup(new Soup());
+        Soup createdSoup = soupRepository.save(soup);
+        return createdSoup.getId();
     }
+
 
     @Override
     public List<SoupLightDto> getAll(){
@@ -120,15 +122,13 @@ public class SoupServiceImpl implements SoupService {
 
     @Override
     public void updateSoup(Soup soup) {
-        // Retrieve the existing soup entity from the database
         Optional<Soup> existingSoupOptional = soupRepository.findById(soup.getId());
         existingSoupOptional.ifPresent(existingSoup -> {
             existingSoup.setName(soup.getName());
             existingSoup.setPrice(soup.getPrice());
             existingSoup.setStock(soup.getStock());
             existingSoup.setType(soup.getType());
-            existingSoup.setIngredients(soup.getIngredients()); // Make sure to handle ingredient updates if necessary
-
+            existingSoup.setIngredients(soup.getIngredients());
             soupRepository.save(existingSoup);
         });
     }

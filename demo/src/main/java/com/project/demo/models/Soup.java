@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 //import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -99,4 +100,23 @@ public class Soup {
         lightSoup.setType(this.getType());
         return lightSoup;
     }
+    // Inside the Soup class
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Soup soup = (Soup) o;
+        return Objects.equals(id, soup.id) &&
+                Objects.equals(name, soup.name) &&
+                Double.compare(soup.price, price) == 0 &&
+                stock == soup.stock &&
+                type == soup.type &&
+                Objects.equals(ingredients, soup.ingredients);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, stock, type, ingredients);
+    }
+
 }

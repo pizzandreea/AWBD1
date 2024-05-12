@@ -1,7 +1,9 @@
 package com.project.demo;
 
 import com.project.demo.controllers.SoupController;
+import com.project.demo.dtos.SoupCreateDto;
 import com.project.demo.models.Soup;
+import com.project.demo.models.SoupType;
 import com.project.demo.repositories.SoupRepository;
 import com.project.demo.services.impl.SoupServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,19 +17,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 public class SoupControllerIntegrationTest {
-    @Mock
-    SoupRepository soupRepository;
     @MockBean
     SoupServiceImpl soupService;
     MockMvc mockMvc;
@@ -40,7 +44,6 @@ public class SoupControllerIntegrationTest {
 
     @Test
     public void showByIdMvc() throws Exception{
-        MockitoAnnotations.openMocks(this);
         Integer id = 1;
         Soup soupTest = new Soup();
         soupTest.setId(id);
@@ -59,4 +62,30 @@ public class SoupControllerIntegrationTest {
                 .andExpect(view().name("notFoundException"));
 
     }
+    @Test
+    public void testSaveValidSoup() throws Exception {
+        SoupCreateDto soupCreateDto = new SoupCreateDto();
+        soupCreateDto.setName("Test Soup");
+        soupCreateDto.setPrice(5.0);
+        soupCreateDto.setType(SoupType.CHICKEN);
+        soupCreateDto.setStock(10);
+
+        Soup expectedSoup = new Soup();
+        expectedSoup.setId(1);
+
+        when(soupService.create(any(SoupCreateDto.class))).thenReturn(expectedSoup.getId());
+        when(soupService.getSoupById(expectedSoup.getId())).thenReturn(expectedSoup);
+
+        mockMvc.perform(post("/soups/create")
+                        .flashAttr("soup", soupCreateDto))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/soupsList/0?pageSize=5&field=name"));
+
+        verify(soupService, times(1)).create(soupCreateDto);
+
+        Soup createdSoup = soupService.getSoupById(expectedSoup.getId());
+        assertNotNull(createdSoup);
+    }
+
+
 }

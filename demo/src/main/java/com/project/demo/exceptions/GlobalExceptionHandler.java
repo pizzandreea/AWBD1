@@ -7,13 +7,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
-public class GlobalExceptionHandles {
+public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
     public ModelAndView handlerNotFoundException(Exception exception){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModel().put("exception", exception);
         modelAndView.setViewName("notFoundException");
+        return modelAndView;
+    }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DuplicateRowException.class)
+    public ModelAndView handlerDuplicateException(Exception exception){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModel().put("exception", exception);
+        modelAndView.setViewName("duplicateException");
         return modelAndView;
     }
 }
