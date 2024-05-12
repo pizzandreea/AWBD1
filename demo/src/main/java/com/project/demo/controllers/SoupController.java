@@ -2,16 +2,19 @@ package com.project.demo.controllers;
 
 import com.project.demo.dtos.SoupCreateDto;
 import com.project.demo.dtos.SoupLightDto;
+import com.project.demo.exceptions.EntityNotFoundException;
 import com.project.demo.models.Soup;
 
 import com.project.demo.services.SoupService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -106,4 +109,12 @@ public class SoupController {
         soupService.delete(id);
         return "redirect:/soupsList/0?pageSize=5&field=name";
     }
+//    @ExceptionHandler(EntityNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public ModelAndView HandlerNotFoundException(Exception exception){
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.getModel().put("exception", exception);
+//        modelAndView.setViewName("notFoundException");
+//        return modelAndView;
+//    }
 }

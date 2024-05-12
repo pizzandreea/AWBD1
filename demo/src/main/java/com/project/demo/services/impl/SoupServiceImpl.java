@@ -2,6 +2,7 @@ package com.project.demo.services.impl;
 
 import com.project.demo.dtos.SoupCreateDto;
 import com.project.demo.dtos.SoupLightDto;
+import com.project.demo.exceptions.EntityNotFoundException;
 import com.project.demo.exceptions.SoupRetrievalException;
 import com.project.demo.models.Soup;
 import com.project.demo.models.SoupType;
@@ -58,8 +59,14 @@ public class SoupServiceImpl implements SoupService {
 
     @Override
     public Soup getSoupById(Integer id) {
-        Soup soup = soupRepository.findById(id).get();
-        return soup;
+        Optional<Soup> optionalSoup = soupRepository.findById(id);
+        if(optionalSoup.isPresent()){
+            return optionalSoup.get();
+        }
+        else{
+            throw new EntityNotFoundException("Soup with ID " + id + " not found");
+        }
+
     }
 
     @Override
