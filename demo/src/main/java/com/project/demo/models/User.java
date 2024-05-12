@@ -19,23 +19,25 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @NotBlank
     @Column(nullable = false, length = 100)
     private String firstName;
-//    @NotBlank
     @Column(nullable = false, length = 100)
     private String lastName;
-//    @NotBlank
     @Column(nullable = false, length = 100, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-//    @NotBlank
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders;
     private String password;
     private Boolean locked;
     private Boolean enabled;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShippingAddress> shippingAddresses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
